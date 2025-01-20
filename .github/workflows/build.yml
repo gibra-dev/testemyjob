@@ -9,41 +9,25 @@ on:
       - main  # Executa o build quando um PR for feito para o branch main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest  # Especifica que o workflow rodará em um sistema Ubuntu
+  deploy:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v2  # Faz o checkout do repositório
+        uses: actions/checkout@v2
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2  # Configura o Node.js
+        uses: actions/setup-node@v2
         with:
-          node-version: '18'  # Atualiza a versão do Node.js para v18, compatível com o ESLint
+          node-version: '18'
 
-      - name: Cache Yarn dependencies
-        uses: actions/cache@v2  # Cache de dependências do Yarn
-        with:
-          path: ~/.yarn/cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Install dependencies
-        run: yarn install  # Instala as dependências usando Yarn
-
-      - name: Build project
-        run: yarn build  # Executa o build do projeto usando Yarn
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3  # Atualiza para a versão v3 da ação
-        with:
-          name: build-artifact  # Nome do artefato
-          path: ./dist  # Caminho para os arquivos de build (geralmente a pasta 'dist' ou 'build')
+      - name: Build the project
+        run: yarn install && yarn build
 
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4  # Usando a versão mais recente estável v4
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages  # A branch onde o conteúdo será publicado
-          folder: dist  # A pasta com o build (por exemplo, dist)
-
+          branch: gh-pages
+          folder: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Garantir o uso do GITHUB_TOKEN
