@@ -34,7 +34,7 @@ jobs:
           path: ./dist  # Caminho para os arquivos de build (geralmente a pasta 'dist' ou 'build')
 
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4.1.0  # Ação para deploy no GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4  # Usando a versão v4 mais recente
         with:
           branch: gh-pages  # A branch onde o conteúdo será publicado
           folder: dist  # A pasta com o build (por exemplo, dist)
