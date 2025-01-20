@@ -19,13 +19,21 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2  # Configura o Node.js
         with:
-          node-version: '16'  # Versão do Node.js que você está usando
+          node-version: '16'  # Versão do Node.js que você está usando (alterado para v16)
+
+      - name: Cache Yarn dependencies
+        uses: actions/cache@v2  # Cache de dependências do Yarn
+        with:
+          path: ~/.yarn/cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
 
       - name: Install dependencies
-        run: npm install  # Instala as dependências do projeto
+        run: yarn install  # Instala as dependências usando Yarn
 
       - name: Build project
-        run: npm run build  # Executa o build do projeto
+        run: yarn build  # Executa o build do projeto usando Yarn
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v3  # Atualiza para a versão v3 da ação
@@ -38,3 +46,4 @@ jobs:
         with:
           branch: gh-pages  # A branch onde o conteúdo será publicado
           folder: dist  # A pasta com o build (por exemplo, dist)
+
