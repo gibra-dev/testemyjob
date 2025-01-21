@@ -1,9 +1,9 @@
 <template>
   <TopMenu :user="user" />
   <div class="box-card">
-    <p><span>{{ user.wallet_balance }}</span> <br>MZN</p>
+    <p><small><strong>Saldo:</strong></small><br><span>{{ balance }}</span> MZN</p>
     <div class="links">
-      <a href="">levantar</a>
+      <a href="/withdrawal">Levantar</a>
     </div>
   </div>
   <div class="content">
@@ -11,24 +11,14 @@
     <div v-if="loading">Carregando produtos...</div>
     <div v-if="error" class="error">{{ error }}</div>
     <div v-if="products.length">
-      <Card
-        v-for="product in products"
-        :key="product.id"
-        :product="product"
-        @buy-product="handleBuyProduct"
-      />
+      <Card v-for="product in products" :key="product.id" :product="product" @buy-product="handleBuyProduct" />
     </div>
     <div class="bar"></div>
   </div>
   <Menu />
   <!-- Adiciona o PopUp -->
-  <PopUp
-    v-if="showPopup"
-    :show-popup="showPopup"
-    :response-message="popupMessage"
-    :popup-content="popupContent"
-    @close-popup="closePopup"
-  />
+  <PopUp v-if="showPopup" :show-popup="showPopup" :response-message="popupMessage" :popup-content="popupContent"
+    @close-popup="closePopup" />
 </template>
 
 <script>
@@ -54,6 +44,7 @@ export default {
       showPopup: false, // Controla a exibição do popup
       popupMessage: "", // Mensagem principal do popup
       popupContent: "", // Conteúdo adicional do popup
+      balance: 0.0,
     };
   },
   created() {
@@ -62,8 +53,28 @@ export default {
       this.user = JSON.parse(userData);
     }
     this.fetchProducts();
+    this.getBalance();
   },
   methods: {
+    // Obtém o saldo do usuário
+    async getBalance() {
+      const email = this.user.email;
+      try {
+        const response = await apiClient.post("/myjob/callback.php", {
+          action: "balance",
+          email: email,
+        });
+
+        if (response.data.status === "success") {
+          this.balance = parseFloat(response.data.balance).toFixed(2);
+        } else {
+          this.error = response.data.message || "Erro ao carregar saldo.";
+        }
+      } catch (err) {
+        this.error = err.response?.data?.message || "Erro de conexão. Por favor, tente novamente.";
+      }
+    },
+    // Carrega os produtos
     async fetchProducts() {
       this.loading = true;
       this.error = null;
@@ -78,11 +89,12 @@ export default {
           this.error = response.data.message || "Erro ao carregar produtos.";
         }
       } catch (err) {
-        this.error = "Erro de conexão. Por favor, tente novamente.";
+        this.error = err.response?.data?.message || "Erro de conexão. Por favor, tente novamente.";
       } finally {
         this.loading = false;
       }
     },
+    // Lida com a compra de produtos
     async handleBuyProduct(product) {
       try {
         const response = await apiClient.post("/myjob/callback.php", {
@@ -94,6 +106,7 @@ export default {
         if (response.data.status === "success") {
           this.popupMessage = "Compra realizada com sucesso!";
           this.popupContent = `Você comprou: ${product.name} por ${product.price} MZN.`;
+          this.getBalance(); // Atualiza o saldo após a compra
         } else {
           this.popupMessage = "Falha na compra";
           this.popupContent = response.data.message || "Tente novamente mais tarde.";
@@ -105,17 +118,19 @@ export default {
         this.showPopup = true;
       }
     },
+    // Fecha o popup
     closePopup() {
       this.showPopup = false;
     },
   },
 };
 </script>
-  
+
 <style scoped>
-h2{
+h2 {
   font-size: 1.2rem;
 }
+
 .box-card {
   background: #fff;
   padding: 10px;
@@ -139,12 +154,9 @@ h2{
 
 .content {
   flex: 1;
-  /* Faz o .content ocupar o espaço restante do .container */
   width: 100%;
   overflow-y: auto;
-  /* Ativa a rolagem vertical */
   overflow-x: hidden;
-  /* Desabilita a rolagem horizontal */
 }
 
 .links a {
@@ -154,13 +166,20 @@ h2{
   color: #047bfb;
   border-radius: 30px;
   padding: 10px 20px;
+  transition: all 0.3s ease;
 }
-.bar{
+
+.links a:hover {
+  background: #047bfb;
+  color: #fff;
+}
+
+.bar {
   height: 45px;
 }
 
 .error {
   color: red;
   font-weight: bold;
-}</style>
-  
+}
+</style>

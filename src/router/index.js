@@ -4,6 +4,10 @@ import SignUp from '@/views/SignUp.vue';
 import SignIn from '@/views/SignIn.vue';
 import Deposit from '@/views/Deposit.vue';
 import Profile from '@/views/Profile.vue';
+import Withdrawal from '@/views/Withdrawal.vue';
+import Invite from '@/views/Invite.vue';
+import Investments from '@/views/Investments.vue';
+import Support from '@/views/Support.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,6 +22,30 @@ const router = createRouter({
       path: '/deposit',
       name: 'deposit',
       component: Deposit,
+      meta: { requiresAuth: true }, // Protegido
+    },
+    {
+      path: '/withdrawal',
+      name: 'withdrawal',
+      component: Withdrawal,
+      meta: { requiresAuth: true }, // Protegido
+    },
+    {
+      path: '/investments',
+      name: 'investments',
+      component: Investments,
+      meta: { requiresAuth: true }, // Protegido
+    },
+    {
+      path: '/support',
+      name: 'support',
+      component: Support,
+      meta: { requiresAuth: true }, // Protegido
+    },
+    {
+      path: '/invite',
+      name: 'invite',
+      component: Invite,
       meta: { requiresAuth: true }, // Protegido
     },
     {
