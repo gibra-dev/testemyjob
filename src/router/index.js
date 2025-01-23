@@ -8,6 +8,7 @@ import Withdrawal from '@/views/Withdrawal.vue';
 import Invite from '@/views/Invite.vue';
 import Investments from '@/views/Investments.vue';
 import Support from '@/views/Support.vue';
+import Transactions from '@/views/Transactions.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,6 +35,12 @@ const router = createRouter({
       path: '/investments',
       name: 'investments',
       component: Investments,
+      meta: { requiresAuth: true }, // Protegido
+    },
+    {
+      path: '/transactions',
+      name: 'transactions',
+      component: Transactions,
       meta: { requiresAuth: true }, // Protegido
     },
     {

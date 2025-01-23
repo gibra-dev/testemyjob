@@ -25,6 +25,7 @@
     "eslint": "^9.14.0",
     "eslint-plugin-cypress": "^4.1.0",
     "eslint-plugin-vue": "^9.30.0",
+    "gh-pages": "^6.3.0",
     "start-server-and-test": "^2.0.9",
     "vite": "^6.0.5",
     "vite-plugin-vue-devtools": "^7.6.8"

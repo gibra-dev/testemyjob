@@ -2,7 +2,7 @@
     <TopMenu :user="user" />
     <div>
         <form @submit.prevent="deposit">
-            <h2>Depósito</h2>
+            <h2>Levantamentos</h2>
 
             <!-- Mensagem de resposta -->
             <div class="form-input column">
@@ -26,7 +26,7 @@
             </div>
         </form>
         <div class="">
-            <p></p>
+            <p class="p-text">O valor mínimo de saque é 100 MZN.<br> A retirada deduzirá 16% da taxa de IVA <br>O tempo de retirada é de 1 a 72h</p>
         </div>
         <Menu />
     </div>
@@ -73,7 +73,7 @@ export default {
 
             // Validação para valor mínimo
             if (this.amount < 100) {
-                this.responseMessage = "O valor mínimo para depósito é 100.";
+                this.responseMessage = "O valor mínimo para Levantamento é 100.";
                 this.responseStatus = "error";
                 return;
             }
@@ -81,21 +81,20 @@ export default {
             try {
                 // Envia os dados para o backend
                 const response = await apiClient.post("/myjob/callback.php", {
-                    action: "deposit",
+                    action: "withdrawal",
                     email: this.user.email, // Usa o email do usuário autenticado
                     amount: this.amount,
-                    number: this.number,
+                    number: this.number
                 });
 
                 // Manipula a resposta
                 if (response.data.status === "success") {
-                    this.responseMessage = "Depósito realizado com sucesso!";
+                    this.responseMessage = "Levantamento realizado com sucesso!";
                     this.responseStatus = "success";
-                    this.method = "";
                     this.amount = "";
                     this.number = "";
                 } else {
-                    this.responseMessage = response.data.message || "Falha ao realizar o depósito.";
+                    this.responseMessage = response.data.message || "Falha ao realizar o Levantamento.";
                     this.responseStatus = "error";
                 }
             } catch (err) {
@@ -110,3 +109,8 @@ export default {
     },
 };
 </script>
+<style>
+    .p-text{
+        padding: 15px;
+    }
+</style>
