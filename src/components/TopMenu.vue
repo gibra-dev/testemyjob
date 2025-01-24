@@ -1,6 +1,7 @@
 <template>
     <div class="header">
         <div class="logo">
+          <img src="@/assets/logotipo.png" alt="logotipo">
         </div>
         <div class="info">
             <p>Olá, {{ user.name }}</p>
@@ -37,10 +38,13 @@
     padding: 10px;
   }
   .logo{
-    background: #ccc;
-    border-radius: 50%;
     height: 48px;
     width: 48px;
+  }
+  .logo img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .header .info{
     flex: 1;

@@ -1,37 +1,41 @@
 <template>
-    <div>
-        <form @submit.prevent="signUp">
-            <h2>Criar conta</h2>
-            <div class="form-input column">
-                <!-- Mensagem de resposta -->
-                <div v-if="responseMessage" :class="responseStatus === 'success' ? 'success-message' : 'error-message'">
-                    {{ responseMessage }}
-                </div>
-            </div>
-            <div class="form-input">
-                <label for="" class="icons"><i class="bi bi-person"></i></label>
-                <input type="text" placeholder="Digite o seu Nome" v-model="name" required>
-            </div>
-            <div class="form-input">
-                <label for="" class="icons"><i class="bi bi-envelope"></i></label>
-                <input type="email" placeholder="Digite o seu Email" v-model="email" required>
-            </div>
-            <div class="form-input">
-                <label for="" class="icons"><i class="bi bi-person-fill-add"></i></label>
-                <input type="text" placeholder="Digite o código de convite" v-model="invite_code">
-            </div>
-            <div class="form-input">
-                <label for="" class="icons"><i class="bi bi-lock"></i></label>
-                <input type="password" placeholder="Digite a sua Senha" v-model="password" required>
-            </div>
-            <div class="form-input column">
-                <button type="submit">Entrar</button>
-                <span class="links">
-                    <a href="/sign-in">Já tem uma conta? Entrar</a>
-                </span>
-            </div>
-        </form>
+  <div>
+    <div class="logo">
+      <img src="@/assets/logotipo.png" alt="logotipo"
+        style="display: block; width: 150px; height: 150px; margin-right: auto; margin: auto;">
     </div>
+    <form @submit.prevent="signUp">
+      <h2>Criar conta</h2>
+      <div class="form-input column">
+        <!-- Mensagem de resposta -->
+        <div v-if="responseMessage" :class="responseStatus === 'success' ? 'success-message' : 'error-message'">
+          {{ responseMessage }}
+        </div>
+      </div>
+      <div class="form-input">
+        <label for="" class="icons"><i class="bi bi-person"></i></label>
+        <input type="text" placeholder="Digite o seu Nome" v-model="name" required>
+      </div>
+      <div class="form-input">
+        <label for="" class="icons"><i class="bi bi-envelope"></i></label>
+        <input type="email" placeholder="Digite o seu Email" v-model="email" required>
+      </div>
+      <div class="form-input">
+        <label for="" class="icons"><i class="bi bi-person-fill-add"></i></label>
+        <input type="text" placeholder="Digite o código de convite" v-model="invite_code">
+      </div>
+      <div class="form-input">
+        <label for="" class="icons"><i class="bi bi-lock"></i></label>
+        <input type="password" placeholder="Digite a sua Senha" v-model="password" required>
+      </div>
+      <div class="form-input column">
+        <button type="submit">Entrar</button>
+        <span class="links">
+          <a href="/sign-in">Já tem uma conta? Entrar</a>
+        </span>
+      </div>
+    </form>
+  </div>
 </template>
   
 <script>
@@ -103,31 +107,31 @@ export default {
   
 <style scoped>
 h2 {
-    padding: 25px 25px 0 25px;
+  padding: 0 25px;
 }
 
 a {
-    color: #35fbf0;
-    text-decoration: none;
+  color:  #047bfb;
+  text-decoration: none;
 }
 
 a:hover {
-    color: #8c0030;
+  color: #8c0030;
 }
 
 /* Estilização opcional para mensagens */
 .success-message {
-    padding: 10px;
-    font-size: 12px;
-    background: #198754;
-    color: #fff;
-    margin-top: 1rem;
+  padding: 10px;
+  font-size: 12px;
+  background: #198754;
+  color: #fff;
+  margin-top: 1rem;
 }
 
 .error-message {
-    padding: 10px;
-    background: #dc3545;
-    color: #fff;
-    margin-top: 1rem;
+  padding: 10px;
+  background: #dc3545;
+  color: #fff;
+  margin-top: 1rem;
 }
 </style>

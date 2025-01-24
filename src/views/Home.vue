@@ -7,8 +7,8 @@
     </div>
   </div>
   <div class="content">
-    <h2>Produtos Disponíveis</h2>
-    <div v-if="loading">Carregando produtos...</div>
+    <h2>Acções Disponíveis</h2>
+    <div v-if="loading">Carregando Acções...</div>
     <div v-if="error" class="error">{{ error }}</div>
     <div v-if="products.length">
       <Card v-for="product in products" :key="product.id" :product="product" @buy-product="handleBuyProduct" />
@@ -84,7 +84,7 @@ export default {
         });
 
         if (response.data.status === "success") {
-          this.products = response.data.objects;
+          this.products = response.data.objects.filter(product => product.stock_quantity > 0);
         } else {
           this.error = response.data.message || "Erro ao carregar produtos.";
         }

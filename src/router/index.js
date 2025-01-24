@@ -17,25 +17,25 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-      meta: { requiresAuth: true }, // Protegido
+      meta: { requiresAuth: true }, 
     },
     {
       path: '/deposit',
       name: 'deposit',
       component: Deposit,
-      meta: { requiresAuth: true }, // Protegido
+      meta: { requiresAuth: true }, 
     },
     {
       path: '/withdrawal',
       name: 'withdrawal',
       component: Withdrawal,
-      meta: { requiresAuth: true }, // Protegido
+      meta: { requiresAuth: true }, 
     },
     {
       path: '/investments',
       name: 'investments',
       component: Investments,
-      meta: { requiresAuth: true }, // Protegido
+      meta: { requiresAuth: true }, 
     },
     {
       path: '/transactions',
@@ -47,13 +47,13 @@ const router = createRouter({
       path: '/support',
       name: 'support',
       component: Support,
-      meta: { requiresAuth: true }, // Protegido
+      meta: { requiresAuth: true }, 
     },
     {
       path: '/invite',
       name: 'invite',
       component: Invite,
-      meta: { requiresAuth: true }, // Protegido
+      meta: { requiresAuth: true }, 
     },
     {
       path: '/sign-up/:invite_code?',
@@ -69,7 +69,7 @@ const router = createRouter({
       path: '/profile',
       name: 'profile',
       component: Profile,
-      meta: { requiresAuth: true }, // Protegido
+      meta: { requiresAuth: true }, 
     },
   ],
 });

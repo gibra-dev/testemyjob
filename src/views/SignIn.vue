@@ -1,5 +1,9 @@
 <template>
   <div>
+    <div class="logo">
+      <img src="@/assets/logotipo.png" alt="logotipo"
+        style="display: block; width: 150px; height: 150px; margin-right: auto; margin: auto;">
+    </div>
     <form @submit.prevent="signIn">
       <h2>Login</h2>
       <div class="form-input column">
@@ -61,19 +65,21 @@ export default {
 </script>
   
 <style scoped>
-h2{
-  padding: 25px 25px 0 25px;
+h2 {
+  padding: 0 25px;
 }
-a{
-  color: #35fbf0;
+
+a {
+  color: #047bfb;
   text-decoration: none;
 }
-a:hover{
+
+a:hover {
   color: #8c0030;
 }
+
 .error {
   color: red;
   font-weight: bold;
-}
-</style>
+}</style>
   

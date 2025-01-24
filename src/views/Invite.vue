@@ -1,6 +1,7 @@
 <template>
     <TopMenu :user="user" />
     <div class="content">
+        <div class="bar-top"></div>
         <label class="label-title">Codigo de Convite</label>
         <div class="form-input">
             <label for="" class="icons"><i class="bi bi-person-fill-add"></i></label>
@@ -36,7 +37,7 @@ export default {
     created() {
         // Carrega os dados do usuário autenticado
         const userData = localStorage.getItem("user");
-        const Url = 'http://localhost:5173';
+        const Url = 'https://nextcap.us';
         if (userData) {
             this.user = JSON.parse(userData);
             this.code = this.user.reference_code;
@@ -58,8 +59,13 @@ export default {
     margin: 20px;
 }
 .text {
-    background: #fff;
+    /*background: #fff;*/
     padding: 10px;
     margin: 15px;
+}
+
+.bar-top {
+    /*background: #fff;*/
+    padding: 10px;
 }
 </style>

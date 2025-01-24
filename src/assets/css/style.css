@@ -75,3 +75,13 @@ body{
     color: #fff;
     padding: 10px;
 }
+
+@media (max-width: 400px) {
+    body {
+        width: 100%;
+    }
+    .contianer {
+        width: 100%;
+    }
+  
+  }
