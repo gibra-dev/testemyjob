@@ -146,5 +146,7 @@ h2 {
 .error {
     color: red;
     font-weight: bold;
+    padding: 10px 15px;
+    margin: 10px;
 }
 </style>

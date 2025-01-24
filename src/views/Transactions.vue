@@ -2,23 +2,22 @@
     <TopMenu :user="user" />
     <div class="content">
         <h2>Transacções</h2>
-        <div>
-            
-        </div>
-        <div v-if="loading">Carregando investimentos...</div>
-        <div v-if="error" class="error">{{ error }}</div>
-        <div v-if="products.length">
-            <div v-for="product in products" :key="product.id" class="card">
-                <h3 class="title">{{ product.name }}</h3>
-                <div class="card-body">
-                    <p>Preço: {{ product.price }} MZN</p>
-                    <p>Rendimento de {{ product.profit * 100 }}% diários</p>
-                    <p>Ganhos do mês: {{ monthlyEarnings(product) }} MZN</p>
-                </div>
+        <div v-if="loading" class="loading">Carregando...</div>
+        <div v-else>
+            <div v-if="error" class="error">{{ error }}</div>
+            <div v-if="withdrawals.length > 0" class="transactions">
+                <span>Retirada</span>
+                <span>{{ withdrawals[0].status }}</span>
+                <span>{{ withdrawals[0].amount }} MZN</span>
             </div>
-        </div>
-        <div v-if="!products.length && !loading" class="no-products">
-            Nenhum investimento encontrado.
+            <div v-if="transactions.length > 0" class="transactions">
+                <span>{{ transactions[0].transaction_type }}</span>
+                <span>{{ transactions[0].status }}</span>
+                <span>{{ transactions[0].amount }} MZN</span>
+            </div>
+            <div v-if="withdrawals.length === 0 && transactions.length === 0" class="info">
+                Nenhuma transacção disponível no momento.
+            </div>
         </div>
         <div class="bar"></div>
     </div>
@@ -26,7 +25,7 @@
 </template>
 
 <script>
-import TopMenu from '../components/TopMenu.vue';
+import TopMenu from "../components/TopMenu.vue";
 import apiClient from "@/assets/js/https.js";
 import Menu from "../components/Menu.vue";
 
@@ -38,44 +37,43 @@ export default {
     data() {
         return {
             user: {}, // Dados do usuário autenticado
-            products: [], // Produtos (investimentos) do usuário
+            withdrawals: [], // Lista de retiradas
+            transactions: [], // Lista de transacções
             loading: false, // Indica se está carregando os dados
             error: null, // Mensagens de erro
         };
     },
     created() {
-        // Carrega os dados do usuário autenticado
         const userData = localStorage.getItem("user");
 
         if (userData) {
             this.user = JSON.parse(userData);
-            this.investments(); // Chama o método para carregar os investimentos
+            this.fetchWithdrawals(); // Carrega as retiradas
+            this.fetchTransactions(); // Carrega as transacções
         } else {
-            this.$router.push("/sign-in"); // Redireciona para login se o usuário não estiver autenticado
+            this.$router.push("/sign-in"); // Redireciona para login se não autenticado
         }
     },
     methods: {
-        async investments() {
-            const email = this.user.email;
+        async fetchWithdrawals() {
             this.loading = true;
             this.error = null;
 
             try {
-                // Faz a requisição à API
                 const response = await apiClient.post("/myjob/callback.php", {
-                    action: "get-investments",
+                    action: "get-withdrawals",
                 });
 
                 if (response.data.status === "success") {
-                    // Filtra apenas os investimentos do usuário com o e-mail correspondente
-                    this.products = response.data.objects.filter(obj => obj.email === email);
+                    this.withdrawals = response.data.objects.filter(
+                        obj => obj.email === this.user.email && obj.status === "pending"
+                    );
 
-                    // Caso não encontre nenhum investimento
-                    if (this.products.length === 0) {
-                        this.error = "Nenhum investimento encontrado.";
+                    if (this.withdrawals.length === 0) {
+                        this.error = "Nenhuma retirada encontrada.";
                     }
                 } else {
-                    this.error = response.data.message || "Erro ao carregar produtos.";
+                    this.error = response.data.message || "Erro ao carregar retiradas.";
                 }
             } catch (err) {
                 console.error("Erro ao conectar:", err);
@@ -84,10 +82,32 @@ export default {
                 this.loading = false;
             }
         },
-        // Função para calcular os ganhos do mês com base no preço e lucro diário
-        monthlyEarnings(product) {
-            // Calcula os ganhos do mês considerando 30 dias
-            return (product.price * product.profit * 30).toFixed(2);
+        async fetchTransactions() {
+            this.loading = true;
+            this.error = null;
+
+            try {
+                const response = await apiClient.post("/myjob/callback.php", {
+                    action: "get-transactions",
+                });
+
+                if (response.data.status === "success") {
+                    this.transactions = response.data.objects.filter(
+                        obj => obj.email === this.user.email
+                    );
+
+                    if (this.transactions.length === 0) {
+                        this.error = "Nenhuma transacção encontrada.";
+                    }
+                } else {
+                    this.error = response.data.message || "Erro ao carregar transacções.";
+                }
+            } catch (err) {
+                console.error("Erro ao conectar:", err);
+                this.error = "Erro de conexão. Por favor, tente novamente.";
+            } finally {
+                this.loading = false;
+            }
         },
         logout() {
             localStorage.removeItem("user"); // Remove os dados do usuário
@@ -101,53 +121,47 @@ export default {
 h2 {
     font-size: 1.2rem;
 }
-
-.box-card {
+.transactions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 500;
     background: #fff;
     padding: 10px;
-    margin: 15px;
+    margin: 15px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
-
-.box-card p {
-    padding: 10px 0;
-}
-
-.box-card span {
-    font-size: 1.125rem;
-    font-weight: 600;
-}
-
-.links {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.content {
-    flex: 1;
-    /* Faz o .content ocupar o espaço restante do .container */
-    width: 100%;
-    overflow-y: auto;
-    /* Ativa a rolagem vertical */
-    overflow-x: hidden;
-    /* Desabilita a rolagem horizontal */
-}
-
-.links a {
-    text-decoration: none;
-    font-size: 12px;
-    background: #99cef7;
+.loading {
+    font-size: 1rem;
+    text-align: center;
     color: #047bfb;
-    border-radius: 30px;
-    padding: 10px 20px;
+    margin: 20px 0;
 }
-
-.bar {
-    height: 45px;
+.info {
+    font-size: 1rem;
+    text-align: center;
+    color: #555;
+    margin: 20px 0;
 }
-
 .error {
     color: red;
     font-weight: bold;
+    padding: 10px 15px;
+    margin: 10px;
+    text-align: center;
+    border: 1px solid red;
+    border-radius: 5px;
+    background: #fdd;
+}
+.bar {
+    height: 45px;
+    background: #f5f5f5;
+}
+.content {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
 }
 </style>

@@ -77,11 +77,22 @@ body{
 }
 
 @media (max-width: 400px) {
-    body {
-        width: 100%;
+    body{
+        height: 100vh;
     }
     .contianer {
-        width: 100%;
+        position: relative;
+        width: 100vw;
+        /*height: 100%;*/
+    }
+
+    .header-footer {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: #346cac;
+        padding: 10px;
     }
   
   }

@@ -27,17 +27,19 @@ export default {
     background: #346cac;
     padding: 10px;
 }
+
 ul {
     display: flex;
     justify-content: space-around;
 }
-ul li{
+
+ul li {
     list-style: none;
 }
-a{
+
+a {
     color: #fff;
     font-weight: 600;
     font-size: 1.5rem;
 }
-
 </style>
