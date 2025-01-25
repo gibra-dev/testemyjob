@@ -3,8 +3,8 @@
     <h3 class="title">{{ product.name }}</h3>
     <div class="card-body">
       <p>Preço: {{ product.price }} MZN</p>
-      <p>Rendimento de {{ product.profit * 100 }}% diários</p>
-      <p>Ganhos do mês: {{ monthlyEarnings }} MZN</p>
+      <p>Lucro diário: {{ product.profit * product.price }} MZN</p>
+      <p>Lucro mensal: {{ monthlyEarnings }} MZN</p>
       <!-- Adiciona o evento @click -->
       <button @click="buyNow">Comprar agora</button>
     </div>
@@ -52,6 +52,7 @@ h3 {
   font-size: 14px;
   font-weight: 500;
   text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .card-body p {

@@ -2,15 +2,15 @@
     <TopMenu :user="user" />
     <div class="content">
         <h2>Ativos Disponíveis</h2>
-        <div v-if="loading">Carregando investimentos...</div>
+        <div v-if="loading" class="loading">Carregando investimentos...</div>
         <div v-if="error" class="error">{{ error }}</div>
         <div v-if="products.length">
             <div v-for="product in products" :key="product.id" class="card">
                 <h3 class="title">{{ product.name }}</h3>
                 <div class="card-body">
                     <p>Preço: {{ product.price }} MZN</p>
-                    <p>Rendimento de {{ product.profit * 100 }}% diários</p>
-                    <p>Ganhos do mês: {{ monthlyEarnings(product) }} MZN</p>
+                    <p>Lucro diário: {{ product.profit * product.price }} MZN</p>
+                    <p>Lucro mensal: {{ monthlyEarnings(product) }} MZN</p>
                 </div>
             </div>
         </div>
@@ -103,6 +103,7 @@ h2 {
     background: #fff;
     padding: 10px;
     margin: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .box-card p {
@@ -112,6 +113,12 @@ h2 {
 .box-card span {
     font-size: 1.125rem;
     font-weight: 600;
+}
+.loading {
+    font-size: 1rem;
+    text-align: center;
+    color: #047bfb;
+    margin: 20px 0;
 }
 
 .links {

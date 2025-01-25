@@ -8,7 +8,7 @@
   </div>
   <div class="content">
     <h2>Acções Disponíveis</h2>
-    <div v-if="loading">Carregando Acções...</div>
+    <div v-if="loading" class="loading">Carregando Acções...</div>
     <div v-if="error" class="error">{{ error }}</div>
     <div v-if="products.length">
       <Card v-for="product in products" :key="product.id" :product="product" @buy-product="handleBuyProduct" />
@@ -130,11 +130,18 @@ export default {
 h2 {
   font-size: 1.2rem;
 }
+.loading {
+    font-size: 1rem;
+    text-align: center;
+    color: #047bfb;
+    margin: 20px 0;
+}
 
 .box-card {
   background: #fff;
   padding: 10px;
   margin: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .box-card p {

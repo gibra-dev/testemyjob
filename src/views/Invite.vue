@@ -63,7 +63,6 @@ export default {
     padding: 10px;
     margin: 15px;
 }
-
 .bar-top {
     /*background: #fff;*/
     padding: 10px;

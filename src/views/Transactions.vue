@@ -120,6 +120,7 @@ export default {
 <style scoped>
 h2 {
     font-size: 1.2rem;
+    padding: 0;
 }
 .transactions {
     display: flex;

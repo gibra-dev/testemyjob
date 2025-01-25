@@ -1,7 +1,7 @@
 <template>
     <div class="overlay" v-if="showPopup" @click="closePopup">
       <div class="popup" @click.stop>
-        <p>{{ responseMessage }}</p>
+        <!--p>{{ responseMessage }}</p-->
         <p>{{ popupContent }}</p>
         <button @click="closePopup">Fechar</button>
       </div>
@@ -45,13 +45,28 @@
     align-items: center;
   }
   .popup {
-    background: white;
+    background: rgba(153, 206, 247, 0.3);
+    color: #047bfb;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 80%;
     max-width: 300px;
     text-align: center;
+  }
+  .popup button{
+    background: #047bfb;
+    padding: 10px 15px;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    border-radius: 15px;
+    color: #fff;
+  }
+  .popup p {
+    font-weight: 600;
+    font-size: 1.125rem;
+    margin-bottom: 15px;
   }
   </style>
   
