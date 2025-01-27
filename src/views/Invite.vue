@@ -37,7 +37,7 @@ export default {
     created() {
         // Carrega os dados do usuário autenticado
         const userData = localStorage.getItem("user");
-        const Url = 'https://nextcap.us';
+        const Url = 'https://nextcap.online';
         if (userData) {
             this.user = JSON.parse(userData);
             this.code = this.user.reference_code;

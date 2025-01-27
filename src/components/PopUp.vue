@@ -39,14 +39,14 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.0);
     display: flex;
     justify-content: center;
     align-items: center;
   }
   .popup {
-    background: rgba(153, 206, 247, 0.3);
-    color: #047bfb;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
