@@ -6,19 +6,41 @@
       <a href="/withdrawal">Levantar</a>
     </div>
   </div>
+
   <div class="content">
     <h2>Acções Disponíveis</h2>
     <div v-if="loading" class="loading">Carregando Acções...</div>
     <div v-if="error" class="error">{{ error }}</div>
     <div v-if="products.length">
-      <Card v-for="product in products" :key="product.id" :product="product" @buy-product="handleBuyProduct" />
+      <Card 
+        v-for="product in products" 
+        :key="product.id" 
+        :product="product" 
+        @buy-product="handleBuyProduct" 
+        @show-details="showProductDetails"
+      />
     </div>
-    <div class="bar"></div>
   </div>
+
   <Menu />
-  <!-- Adiciona o PopUp -->
-  <PopUp v-if="showPopup" :show-popup="showPopup" :response-message="popupMessage" :popup-content="popupContent"
-    @close-popup="closePopup" />
+
+  <!-- PopUp de compra -->
+  <PopUp 
+    v-if="showPopup" 
+    :show-popup="showPopup" 
+    :response-message="popupMessage" 
+    :popup-content="popupContent"
+    @close-popup="closePopup" 
+  />
+
+  <!-- PopUp de detalhes do produto -->
+  <Details 
+      v-if="selectedProduct" 
+      :key="selectedProduct.id" 
+      :product="selectedProduct"
+      @buy-product="handleBuyProduct"  
+      @close-popup="selectedProduct = null"
+  />
 </template>
 
 <script>
@@ -27,6 +49,7 @@ import apiClient from "@/assets/js/https.js";
 import Card from "../components/Card.vue";
 import Menu from "../components/Menu.vue";
 import PopUp from "../components/PopUp.vue";
+import Details from "../components/Details.vue";
 
 export default {
   components: {
@@ -34,35 +57,27 @@ export default {
     Card,
     PopUp,
     Menu,
+    Details
   },
   data() {
     return {
-      user: {}, // Dados do usuário autenticado
-      products: [], // Lista de produtos
-      loading: false, // Estado de carregamento
-      error: null, // Mensagem de erro
-      showPopup: false, // Controla a exibição do popup
-      popupMessage: "", // Mensagem principal do popup
-      popupContent: "", // Conteúdo adicional do popup
+      user: {},
+      products: [],
+      loading: false,
+      error: null,
+      showPopup: false,
+      popupMessage: "",
+      popupContent: "",
       balance: 0.0,
+      selectedProduct: null, // Armazena o produto selecionado
     };
   },
-  created() {
-    const userData = localStorage.getItem("user");
-    if (userData) {
-      this.user = JSON.parse(userData);
-    }
-    this.fetchProducts();
-    this.getBalance();
-  },
   methods: {
-    // Obtém o saldo do usuário
     async getBalance() {
-      const email = this.user.email;
       try {
         const response = await apiClient.post("/myjob/callback.php", {
           action: "balance",
-          email: email,
+          email: this.user.email,
         });
 
         if (response.data.status === "success") {
@@ -71,13 +86,11 @@ export default {
           this.error = response.data.message || "Erro ao carregar saldo.";
         }
       } catch (err) {
-        this.error = err.response?.data?.message || "Erro de conexão. Por favor, tente novamente.";
+        this.error = err.response?.data?.message || "Erro de conexão.";
       }
     },
-    // Carrega os produtos
     async fetchProducts() {
       this.loading = true;
-      this.error = null;
       try {
         const response = await apiClient.post("/myjob/callback.php", {
           action: "get-products",
@@ -89,12 +102,11 @@ export default {
           this.error = response.data.message || "Erro ao carregar produtos.";
         }
       } catch (err) {
-        this.error = err.response?.data?.message || "Erro de conexão. Por favor, tente novamente.";
+        this.error = err.response?.data?.message || "Erro de conexão.";
       } finally {
         this.loading = false;
       }
     },
-    // Lida com a compra de produtos
     async handleBuyProduct(product) {
       try {
         const response = await apiClient.post("/myjob/callback.php", {
@@ -106,23 +118,33 @@ export default {
         if (response.data.status === "success") {
           this.popupMessage = "Compra realizada com sucesso!";
           this.popupContent = `Você comprou: ${product.name} por ${product.price} MZN.`;
-          this.getBalance(); // Atualiza o saldo após a compra
+          this.getBalance();
         } else {
           this.popupMessage = "Falha na compra";
           this.popupContent = response.data.message || "Tente novamente mais tarde.";
         }
       } catch (err) {
         this.popupMessage = "Erro de conexão";
-        this.popupContent = "Por favor, verifique sua conexão e tente novamente.";
+        this.popupContent = "Por favor, verifique sua conexão.";
       } finally {
         this.showPopup = true;
       }
     },
-    // Fecha o popup
+    showProductDetails(product) {
+      this.selectedProduct = product;
+    },
     closePopup() {
       this.showPopup = false;
     },
   },
+  created() {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      this.user = JSON.parse(userData);
+    }
+    this.fetchProducts();
+    this.getBalance();
+  }
 };
 </script>
 

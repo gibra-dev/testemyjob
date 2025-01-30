@@ -1,12 +1,11 @@
 <template>
   <div class="card">
-    <h3 class="title">{{ product.name }}</h3>
+    <img :src="product.image_url" :alt="product.name">
     <div class="card-body">
-      <p>Preço: {{ product.price }} MZN</p>
-      <p>Lucro diário: {{ product.profit * product.price }} MZN</p>
-      <p>Lucro mensal: {{ monthlyEarnings }} MZN</p>
-      <!-- Adiciona o evento @click -->
-      <button @click="buyNow">Comprar agora</button>
+      <h3>{{ product.name }}</h3>
+      <button @click="showDetails" style="background: #e72313; margin-bottom: 12px;">Ver Mais</button>
+      <br>
+      <button @click="buyNow">Comprar Agora</button>
     </div>
   </div>
 </template>
@@ -19,40 +18,49 @@ export default {
       required: true,
     },
   },
-  computed: {
-    monthlyEarnings() {
-      // Calcula os ganhos do mês com base no preço e lucro diário
-      return (this.product.price * this.product.profit * 30).toFixed(2);
-    },
-  },
   methods: {
     buyNow() {
-      // Emite o evento com os dados do produto
       this.$emit("buy-product", this.product);
     },
+    showDetails() {
+      this.$emit("show-details", this.product);
+    }
   },
 };
 </script>
 
+
 <style>
 .card {
+  width: 100%;
   background: #fff;
   margin: 15px;
 }
+.card img{
+  max-width: 88%;
+  margin: 15px;
+  margin-bottom: 0;
+}
 
-h3 {
+/*h3 {
   padding: 10px;
   text-align: center;
   background: #6cc4fc;
   color: #fff;
+}*/
+.card-body h3{
+  padding: 5px;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #000;
 }
-
 .card-body {
   padding: 10px;
   font-size: 14px;
   font-weight: 500;
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding-top: 0;
 }
 
 .card-body p {

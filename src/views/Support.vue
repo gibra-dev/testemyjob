@@ -41,7 +41,7 @@ export default {
     methods: {
         // Função para abrir o WhatsApp
         urlWhatsapp() {
-            const phone = "558123456789"; // Número de telefone com código do país (sem + ou espaços)
+            const phone = "258871602272"; // Número de telefone com código do país (sem + ou espaços)
             const message = encodeURIComponent("Olá, estou entrando em contato!"); // Mensagem personalizada
             const url = `https://wa.me/${phone}?text=${message}`;
             window.open(url, "_blank"); // Abre o link em uma nova aba

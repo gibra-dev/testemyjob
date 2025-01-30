@@ -10,10 +10,14 @@
                 <span>{{ withdrawals[0].status }}</span>
                 <span>{{ withdrawals[0].amount }} MZN</span>
             </div>
-            <div v-if="transactions.length > 0" class="transactions">
-                <span>{{ transactions[0].transaction_type }}</span>
-                <span>{{ transactions[0].status }}</span>
-                <span>{{ transactions[0].amount }} MZN</span>
+            <div v-if="transactions.length > 0" class="transactions-card">
+                <div>
+                    <div v-for="(transaction, index) in transactions" :key="index" class="transactions">
+                        <span class="transaction-type">{{ transaction.transaction_type }}</span>
+                        <span class="transaction-status">{{ transaction.status }}</span>
+                        <span class="transaction-amount">{{ transaction.amount }} MZN</span>
+                    </div>
+                </div>
             </div>
             <div v-if="withdrawals.length === 0 && transactions.length === 0" class="info">
                 Nenhuma transacção disponível no momento.
@@ -70,7 +74,7 @@ export default {
                     );
 
                     if (this.withdrawals.length === 0) {
-                        this.error = "Nenhuma retirada encontrada.";
+                        //this.error = "Nenhuma retirada encontrada.";
                     }
                 } else {
                     this.error = response.data.message || "Erro ao carregar retiradas.";
@@ -92,12 +96,14 @@ export default {
                 });
 
                 if (response.data.status === "success") {
-                    this.transactions = response.data.objects.filter(
-                        obj => obj.email === this.user.email
-                    );
-
+                    // Filtra todas as transações do usuário e garante que o ID seja tratado como número
+                    this.transactions = response.data.objects
+                        .filter(obj => obj.email === this.user.email)
+                        .map(obj => ({ ...obj, id: Number(obj.id) })) // Converte ID para número
+                        .sort((a, b) => b.id - a.id); // Ordena da maior ID (mais recente) para a menor
+                        console.log(response.data.objects);
                     if (this.transactions.length === 0) {
-                        this.error = "Nenhuma transacção encontrada.";
+                        this.error = "Nenhuma transacção encontrada."; //com id 15 deve pagar
                     }
                 } else {
                     this.error = response.data.message || "Erro ao carregar transacções.";
@@ -122,6 +128,7 @@ h2 {
     font-size: 1.2rem;
     padding: 0;
 }
+
 .transactions {
     display: flex;
     justify-content: space-between;
@@ -134,18 +141,21 @@ h2 {
     border: 1px solid #ddd;
     border-radius: 5px;
 }
+
 .loading {
     font-size: 1rem;
     text-align: center;
     color: #047bfb;
     margin: 20px 0;
 }
+
 .info {
     font-size: 1rem;
     text-align: center;
     color: #555;
     margin: 20px 0;
 }
+
 .error {
     color: red;
     font-weight: bold;
@@ -156,10 +166,12 @@ h2 {
     border-radius: 5px;
     background: #fdd;
 }
+
 .bar {
     height: 45px;
     background: #f5f5f5;
 }
+
 .content {
     padding: 20px;
     flex: 1;

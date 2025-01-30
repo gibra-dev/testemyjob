@@ -27,22 +27,25 @@
     margin: 0;
     box-sizing: border-box;
 }
-body{
+
+body {
     font-family: 'Poppins', sans-serif;
     background: #047bfb;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.contianer{
+
+.contianer {
     position: relative;
     width: 400px;
     height: 100vh;
     background: #eff8ff;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
 }
-.form-input{
+
+.form-input {
     display: flex;
     align-items: center;
     background: #ccc;
@@ -50,23 +53,27 @@ body{
     margin: 20px;
     border-radius: 10px;
 }
-.form-input .icons{
-    color:  #888; 
+
+.form-input .icons {
+    color: #888;
     padding-right: 10px;
 }
-.form-input input{
+
+.form-input input {
     flex: 1;
     background: transparent;
     border: none;
     outline: none;
 }
-.column{
+
+.column {
     background: transparent;
     flex-direction: column;
     gap: 5px;
     padding: 0;
 }
-.form-input button{
+
+.form-input button {
     font-weight: 600;
     width: 100%;
     background: #047bfb;
@@ -77,9 +84,10 @@ body{
 }
 
 @media (max-width: 400px) {
-    body{
+    body {
         height: 100vh;
     }
+
     .contianer {
         position: relative;
         width: 100vw;
@@ -94,5 +102,16 @@ body{
         background: #346cac;
         padding: 10px;
     }
-  
-  }
+
+    .card {
+        width: 100%;
+        background: #fff;
+        margin: 15px;
+    }
+
+    .card img {
+        max-width: 88%;
+        margin: 15px;
+        margin-bottom: 0;
+    }
+}
