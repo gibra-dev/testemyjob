@@ -2,7 +2,7 @@
     <TopMenu :user="user" />
     <div>
         <form @submit.prevent="deposit">
-            <h2>Depósito</h2>
+            <h2>Adicionar saldo</h2>
 
             <!-- Mensagem de resposta -->
             <div class="form-input column">
@@ -12,25 +12,17 @@
             </div>
 
             <div class="form-input">
-                <select v-model="method" required :disabled="loading">
-                    <option disabled value="">Selecionar Método</option>
-                    <option value="m-pesa">M-Pesa</option>
-                    <option value="emola">eMola</option>
-                </select>
-            </div>
-
-            <div class="form-input">
                 <label for="" class="icons"><i class="bi bi-currency-dollar"></i></label>
                 <input type="number" placeholder="Digite o valor (ex: 100)" v-model="amount" required :disabled="loading" />
             </div>
 
             <div class="form-input">
-                <label for="" class="icons"><i class="bi bi-phone"></i></label>
-                <input type="tel" placeholder="Digite o número (ex: 855555555)" v-model="number" required :disabled="loading" />
+                <label for="" class="icons"><i class="bi bi-envelope"></i></label>
+                <input type="tel" placeholder="Digite o email" v-model="number" required :disabled="loading" />
             </div>
 
             <div class="form-input column">
-                <button type="submit" :disabled="loading">{{ loading ? "Processando..." : "Depósitar" }}</button>
+                <button type="submit" :disabled="loading">{{ loading ? "Processando..." : "Adicionar" }}</button>
             </div>
         </form>
 
@@ -51,7 +43,6 @@ export default {
     data() {
         return {
             user: {}, // Dados do usuário autenticado
-            method: "", // Método de pagamento
             amount: "", // Valor do depósito
             number: "", // Número do telefone
             responseMessage: null, // Mensagem de resposta da API
@@ -70,7 +61,7 @@ export default {
     },
     methods: {
         async deposit() {
-            if (!this.method || !this.amount || !this.number) {
+            if ( !this.amount || !this.number) {
                 this.responseMessage = "Por favor, preencha todos os campos.";
                 this.responseStatus = "error";
                 return;
@@ -82,17 +73,14 @@ export default {
 
             try {
                 const response = await apiClient.post("/myjob/callback.php", {
-                    action: "deposit",
-                    method: this.method,
-                    email: this.user.email,
+                    action: "add-balance",
                     amount: this.amount,
-                    number: this.number,
+                    email: this.number,
                 });
 
                 if (response.data.status === "success") {
-                    this.responseMessage = "Depósito realizado com sucesso!";
-                    this.responseStatus = "success";
-                    this.method = "";
+                    this.responseMessage = "Saldo adicionado realizado com sucesso!";
+                    this.responseStatus = "success"; 
                     this.amount = "";
                     this.number = "";
                 } else {

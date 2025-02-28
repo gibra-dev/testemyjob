@@ -7,7 +7,7 @@
             <p>Olá, {{ user.name }}</p>
             <p><small>{{ user.email }}</small></p>
         </div>
-        <button @click="logout"><i class="bi bi-box-arrow-in-right"></i></button>
+        <button @click="logout" style="color:  rgb(231, 35, 19);"><i class="bi bi-box-arrow-in-right"></i></button>
     </div>
 </template>
 <script>
@@ -37,6 +37,7 @@
     background: #fff;
     padding: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #99cef7;
   }
   .logo{
     height: 48px;

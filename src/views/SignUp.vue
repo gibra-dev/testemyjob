@@ -13,23 +13,25 @@
         </div>
       </div>
       <div class="form-input">
-        <label for="" class="icons"><i class="bi bi-person"></i></label>
+        <label class="icons"><i class="bi bi-person"></i></label>
         <input type="text" placeholder="Digite o seu Nome" v-model="name" required>
       </div>
       <div class="form-input">
-        <label for="" class="icons"><i class="bi bi-envelope"></i></label>
+        <label class="icons"><i class="bi bi-envelope"></i></label>
         <input type="email" placeholder="Digite o seu Email" v-model="email" required>
       </div>
       <div class="form-input">
-        <label for="" class="icons"><i class="bi bi-person-fill-add"></i></label>
+        <label class="icons"><i class="bi bi-person-fill-add"></i></label>
         <input type="text" placeholder="Digite o código de convite" v-model="invite_code">
       </div>
       <div class="form-input">
-        <label for="" class="icons"><i class="bi bi-lock"></i></label>
+        <label class="icons"><i class="bi bi-lock"></i></label>
         <input type="password" placeholder="Digite a sua Senha" v-model="password" required>
       </div>
       <div class="form-input column">
-        <button type="submit">Entrar</button>
+        <button type="submit" :disabled="loading">
+          {{ loading ? "Processando..." : "Entrar" }}
+        </button>
         <span class="links">
           <a href="/sign-in">Já tem uma conta? Entrar</a>
         </span>
@@ -50,16 +52,18 @@ export default {
       invite_code: '',
       responseMessage: null,
       responseStatus: null,
+      loading: false,
     };
   },
   created() {
-    if (this.$route.params.invite_code) {
+    if (this.$route.params?.invite_code) {
       this.invite_code = this.$route.params.invite_code;
     }
   },
   methods: {
     async signUp() {
       this.responseMessage = null;
+      this.loading = true;
 
       try {
         const response = await apiClient.post('/myjob/callback.php', {
@@ -81,6 +85,8 @@ export default {
         this.responseStatus = "error";
         this.responseMessage = "Ocorreu um erro inesperado. Tente novamente.";
         console.error(error);
+      } finally {
+        this.loading = false;
       }
     },
     translateMessage(message) {
@@ -94,16 +100,16 @@ export default {
 
       // Tratamento especial para mensagens dinâmicas
       if (message.includes("The Email") && message.includes("already exists")) {
-        const email = message.match(/The Email (.+) already exists/)[1];
-        return `O email ${email} já está cadastrado.`;
+        const match = message.match(/The Email (.+) already exists/);
+        return match ? `O email ${match[1]} já está cadastrado.` : "Este email já está cadastrado.";
       }
 
       return translations[message] || message;
     },
   },
 };
-
 </script>
+
   
 <style scoped>
 h2 {

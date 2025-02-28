@@ -42,4 +42,7 @@ a {
     font-weight: 600;
     font-size: 1.5rem;
 }
+a :hover{
+    color: rgb(231, 35, 19);
+}
 </style>

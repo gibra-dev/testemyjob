@@ -4,20 +4,26 @@
         <h2>Ativos Disponíveis</h2>
         <div v-if="loading" class="loading">Carregando investimentos...</div>
         <div v-if="error" class="error">{{ error }}</div>
-        <div v-if="products.length">
+        <div v-if="products.length" class="box-cards">
             <div v-for="product in products" :key="product.id" class="card">
-                <h3 class="title">{{ product.name }}</h3>
-                <div class="card-body">
-                    <p>Preço: {{ product.price }} MZN</p>
-                    <p>Lucro diário: {{ product.profit * product.price }} MZN</p>
-                    <p>Lucro mensal: {{ monthlyEarnings(product) }} MZN</p>
+                <div class="rows">
+                    <div class="img-card">
+                        <img :src="product.image_url" :alt="product.name">
+                    </div>
+                    <div class="card-body">
+                        <h3>{{ product.name }}</h3>
+                        <p><strong>Preço:</strong> {{ product.price }}</p>
+                        <p><strong>Diário:</strong> {{ (product.price * product.profit).toFixed(2) }} MZN</p>
+                        <p><strong>Renda total:</strong> {{ (product.price * product.profit * 30).toFixed(2) }} MZN</p>
+                        <p><strong>Ciclos:</strong> 30 dias</p>
+                    </div>
                 </div>
             </div>
+            <div v-if="!products.length && !loading" class="no-products">
+                Nenhum investimento encontrado.
+            </div>
+            <div class="bar"></div>
         </div>
-        <div v-if="!products.length && !loading" class="no-products">
-            Nenhum investimento encontrado.
-        </div>
-        <div class="bar"></div>
     </div>
     <Menu />
 </template>
@@ -114,6 +120,7 @@ h2 {
     font-size: 1.125rem;
     font-weight: 600;
 }
+
 .loading {
     font-size: 1rem;
     text-align: center;

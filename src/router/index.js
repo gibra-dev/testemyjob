@@ -9,14 +9,28 @@ import Invite from '@/views/Invite.vue';
 import Investments from '@/views/Investments.vue';
 import Support from '@/views/Support.vue';
 import Transactions from '@/views/Transactions.vue';
+import AdmimHome from '@/views/AdmimHome.vue';
+import AdminUser from '@/views/User.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
+    /*{
       path: '/',
       name: 'home',
       component: HomeView,
+      meta: { requiresAuth: true }, 
+    },*/
+    {
+      path: '/',
+      name: 'home',
+      component: AdmimHome,
+      meta: { requiresAuth: true }, 
+    },
+    {
+      path: '/user',
+      name: 'user',
+      component: AdminUser,
       meta: { requiresAuth: true }, 
     },
     {

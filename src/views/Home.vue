@@ -12,35 +12,20 @@
     <div v-if="loading" class="loading">Carregando Acções...</div>
     <div v-if="error" class="error">{{ error }}</div>
     <div v-if="products.length">
-      <Card 
-        v-for="product in products" 
-        :key="product.id" 
-        :product="product" 
-        @buy-product="handleBuyProduct" 
-        @show-details="showProductDetails"
-      />
+      <Card v-for="product in products" :key="product.id" :product="product" @buy-product="handleBuyProduct"
+        @show-details="showProductDetails" />
     </div>
   </div>
 
   <Menu />
 
   <!-- PopUp de compra -->
-  <PopUp 
-    v-if="showPopup" 
-    :show-popup="showPopup" 
-    :response-message="popupMessage" 
-    :popup-content="popupContent"
-    @close-popup="closePopup" 
-  />
+  <PopUp v-if="showPopup" :show-popup="showPopup" :response-message="popupMessage" :popup-content="popupContent"
+    @close-popup="closePopup" />
 
   <!-- PopUp de detalhes do produto -->
-  <Details 
-      v-if="selectedProduct" 
-      :key="selectedProduct.id" 
-      :product="selectedProduct"
-      @buy-product="handleBuyProduct"  
-      @close-popup="selectedProduct = null"
-  />
+  <Details v-if="selectedProduct" :key="selectedProduct.id" :product="selectedProduct" @buy-product="handleBuyProduct"
+    @close-popup="selectedProduct = null" />
 </template>
 
 <script>
@@ -152,20 +137,23 @@ export default {
 h2 {
   font-size: 1.2rem;
 }
+
 .loading {
-    font-size: 1rem;
-    text-align: center;
-    color: #047bfb;
-    margin: 20px 0;
+  font-size: 1rem;
+  text-align: center;
+  color: #047bfb;
+  margin: 20px 0;
 }
 
 .box-card {
   background: #fff;
   padding: 10px;
   margin: 15px;
+  border: 1px solid #99cef7;
+  /* Borda suave */
+  border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
 .box-card p {
   padding: 10px 0;
 }
